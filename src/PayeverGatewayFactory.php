@@ -68,9 +68,7 @@ class PayeverGatewayFactory extends GatewayFactory
 
                 return new Api(
                     (array) $config,
-                    $payeverApi,
-                    $config['payum.http_client'],
-                    $config['httplug.message_factory']
+                    $payeverApi
                 );
             };
 

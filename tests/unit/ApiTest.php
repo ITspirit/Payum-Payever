@@ -2,18 +2,14 @@
 
 declare(strict_types=1);
 
-namespace ItSpirit\Payum\Payever\Tests;
+namespace ItSpirit\Payum\Payever\Tests\unit;
 
-use Http\Message\MessageFactory\GuzzleMessageFactory;
 use ItSpirit\Payum\Payever\Api;
 use ItSpirit\Payum\Payever\lib\Payments\Api as PayeverApi;
-use Payum\Core\HttpClientInterface;
 
 class ApiTest extends \Codeception\Test\Unit
 {
-    /**
-     * @var \UnitTester
-     */
+    /** @var \UnitTester */
     protected $tester;
     
     protected function _before()
@@ -36,9 +32,7 @@ class ApiTest extends \Codeception\Test\Unit
     {
         new Api(
             [],
-            $this->createPayeverApiMock(),
-            $this->createHttpClientMock(),
-            $this->createHttpMessageFactory()
+            $this->createPayeverApiMock()
         );
     }
 
@@ -58,9 +52,7 @@ class ApiTest extends \Codeception\Test\Unit
                 'password' => 'aPass',
                 'sandbox' => 'notABool'
             ],
-            $this->createPayeverApiMock(),
-            $this->createHttpClientMock(),
-            $this->createHttpMessageFactory()
+            $this->createPayeverApiMock()
         );
     }
 
@@ -70,21 +62,5 @@ class ApiTest extends \Codeception\Test\Unit
     protected function createPayeverApiMock()
     {
         return $this->createMock(PayeverApi::class);
-    }
-
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject|HttpClientInterface
-     */
-    protected function createHttpClientMock()
-    {
-        return $this->createMock(HttpClientInterface::class);
-    }
-
-    /**
-     * @return GuzzleMessageFactory
-     */
-    protected function createHttpMessageFactory(): GuzzleMessageFactory
-    {
-        return new GuzzleMessageFactory();
     }
 }

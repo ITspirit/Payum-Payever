@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace ItSpirit\Payum\Payever;
 
-use Http\Message\MessageFactory;
 use ItSpirit\Payum\Payever\lib\Payments\Api as PayeverApi;
 use Payever\ExternalIntegration\Core\Http\Response;
 use Payum\Core\Exception\LogicException;
-use Payum\Core\HttpClientInterface;
 
 class Api
 {
-    /** @var HttpClientInterface */
-    protected $client;
-
-    /** @var MessageFactory */
-    protected $messageFactory;
-
     /** @var array */
     protected $options = [];
 
@@ -27,11 +19,9 @@ class Api
     /**
      * @param array $options
      * @param PayeverApi $payeverApi
-     * @param HttpClientInterface $client
-     * @param MessageFactory $messageFactory
      * @throws \Exception
      */
-    public function __construct(array $options, PayeverApi $payeverApi, HttpClientInterface $client, MessageFactory $messageFactory)
+    public function __construct(array $options, PayeverApi $payeverApi)
     {
         if (empty($options['sandbox']) || is_bool($options['sandbox']) === false) {
             throw new LogicException('The boolean sandbox option must be set.');
@@ -39,28 +29,26 @@ class Api
 
         $this->options = $options;
         $this->payeverApi = $payeverApi;
-        $this->client = $client;
-        $this->messageFactory = $messageFactory;
     }
 
     /**
      * @param array $orderData
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function createPayment(array $orderData): Response
+    public function createPayment(array $orderData)
     {
-        return $this->payeverApi->createPaymentRequest($orderData);
+        return json_decode($this->payeverApi->createPaymentRequest($orderData)->getData());
     }
 
     /**
      * @param string $paymentId
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function retrievePayment(string $paymentId): Response
+    public function retrievePayment(string $paymentId)
     {
-        return $this->payeverApi->retrievePaymentRequest($paymentId);
+        return json_decode($this->payeverApi->retrievePaymentRequest($paymentId)->getData());
     }
 
     /**
@@ -107,52 +95,51 @@ class Api
     /**
      * @param string $paymentId
      * @param array $data
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function authorizePayment(string $paymentId, array $data = []): Response
+    public function authorizePayment(string $paymentId, array $data = [])
     {
-        return $this->payeverApi->authorizePaymentRequest($paymentId, $data);
+        return json_decode($this->payeverApi->authorizePaymentRequest($paymentId, $data)->getData());
     }
 
     /**
      * @param string $paymentId
      * @param array $data
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function shippingGoodsPayment(string $paymentId, array $data = []): Response
+    public function shippingGoodsPayment(string $paymentId, array $data = [])
     {
-        return $this->payeverApi->shippingGoodsPaymentRequest($paymentId, $data);
+        return json_decode($this->payeverApi->shippingGoodsPaymentRequest($paymentId, $data)->getData());
     }
 
     /**
      * @param string $channelSetId
      * @param string $params
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function listPaymentOptions(string $channelSetId = '', string $params = ''): Response
+    public function listPaymentOptions(string $channelSetId = '', string $params = '')
     {
-        return $this->payeverApi->listPaymentOptionsRequest($this->options['slug'], $channelSetId, $params);
+        return json_decode($this->payeverApi->listPaymentOptionsRequest($this->options['slug'], $channelSetId, $params)->getData());
     }
 
     /**
      * @param string $callID
-     * @return Response
+     * @return mixed
      * @throws \Exception
      */
-    public function retrieveAPiCall(string $callID): Response
+    public function retrieveAPiCall(string $callID)
     {
-        return $this->payeverApi->retrieveApiCallRequest($callID);
+        return json_decode($this->payeverApi->retrieveApiCallRequest($callID)->getData());
     }
 
     /**
-     * @return Response
      * @throws \Exception
      */
-    public function listChannelSets(): Response
+    public function listChannelSets()
     {
-        return $this->payeverApi->listChannelSetsRequest($this->options['slug']);
+        return json_decode($this->payeverApi->listChannelSetsRequest($this->options['slug'])->getData());
     }
 }

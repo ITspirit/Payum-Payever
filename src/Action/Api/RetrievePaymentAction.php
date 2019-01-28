@@ -30,7 +30,7 @@ class RetrievePaymentAction extends BaseApiAwareAction
             throw new HttpRedirect($details['payment_url']);
         }
 
-        $this->api->retrievePayment();
+        $this->api->retrievePayment($details['transaction_id']);
     }
 
     /**

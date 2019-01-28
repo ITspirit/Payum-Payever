@@ -2,22 +2,17 @@
 
 declare(strict_types=1);
 
-namespace ItSpirit\Payum\Payever\Tests;
+namespace ItSpirit\Payum\Payever\Tests\unit;
 
 use ItSpirit\Payum\Payever\PayeverGatewayFactory;
-use Payum\Core\CoreGatewayFactory;
 use Payum\Core\Gateway;
-use Payum\Core\GatewayFactory;
-use Payum\Core\GatewayFactoryInterface;
 
 class PayeverGatewayFactoryTest extends \Codeception\Test\Unit
 {
     private const FACTORY_NAME = 'payever';
     private const FACTORY_TITLE = 'Payever';
 
-    /**
-     * @var \UnitTester
-     */
+    /** @var \UnitTester */
     protected $tester;
     
     protected function _before()
